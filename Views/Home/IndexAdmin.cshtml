@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Panel Główny Administratora";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary">Inwentax</h1>
+        <p class="lead text-muted">System do ewidencji sprzętu służbowego</p>
+        <hr class="my-4" style="max-width: 400px; margin: 0 auto;" />
+    </div>
+
+    <div class="row justify-content-center g-4 mt-2">
+        
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 rounded-4">
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                    <div>
+                        <h4 class="card-title fw-bold">Baza Laptopów</h4>
+                    </div>
+                    <a asp-controller="Laptop" asp-action="Index" class="btn btn-primary btn-lg w-100 rounded-3 mt-3 shadow-sm">Zarządzaj</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 rounded-4">
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                    <div>
+                        <h4 class="card-title fw-bold">Baza Telefonów</h4>
+                    </div>
+                    <a asp-controller="Phone" asp-action="Index" class="btn btn-success btn-lg w-100 rounded-3 mt-3 shadow-sm">Zarządzaj</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 rounded-4">
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                    <div>
+                        <h4 class="card-title fw-bold">Historia sprzętowa</h4>
+                    </div>
+                    <a asp-controller="Assignment" asp-action="Index" class="btn btn-warning btn-lg w-100 rounded-3 text-white mt-3 shadow-sm">Zarządzaj</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 rounded-4">
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                    <div>
+                        <h4 class="card-title fw-bold">Baza Użytkowników</h4>
+                    </div>
+                    <a asp-controller="User" asp-action="Index" class="btn btn-danger btn-lg w-100 rounded-3 text-white mt-3 shadow-sm">Zarządzaj</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 rounded-4">
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                    <div>
+                        <h4 class="card-title fw-bold mb-4">Zgłoszenia Pracowników</h4>
+                    </div>  
+                    <a asp-controller="Ticket" asp-action="Index" class="btn btn-secondary btn-lg w-100 rounded-3 text-white mt-3 shadow-sm">Zarządzaj</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

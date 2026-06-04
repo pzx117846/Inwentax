@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Inwentax.Models.Assignment>
+
+@{
+    var usersList = ViewData["UsersList"] as List<Inwentax.Models.UserViewModel> ?? new List<Inwentax.Models.UserViewModel>();
+}
+
+@{
+    ViewData["Title"] = "Historia sprzętu";
+}
+
+<h1>Historia sprzętu</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Wydaj sprzęt</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Pracownik
+            </th>
+            <th>
+                Laptop
+            </th>
+            <th>
+                Telefon
+            </th>
+            <th>
+                Data wydania
+            </th>
+            <th>
+                Data zwrotu
+            </th>
+            <th>
+                Status
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    Akcja
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @{
+                    var userMatch = usersList.FirstOrDefault(u => u.Id == item.UserId);
+                }
+                @if (userMatch != null)
+                {
+                    <span>@userMatch.Name @userMatch.Surname</span>
+                }
+                else
+                {
+                    <span class="text-muted">Nieznany użytkownik</span>
+                }
+            </td>
+                <td>
+                    @if (item.Laptop != null)
+                    {
+                        <span>@item.Laptop.Brand @item.Laptop.Model - (@item.Laptop.serial_number)</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">-</span>
+                    }
+                </td>
+
+                <td>
+                    @if (item.Phone != null)
+                    {
+                        <span>@item.Phone.Brand @item.Phone.Model - (@item.Phone.Imei)</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">-</span>
+                    }
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date_from)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date_to)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> @:|
+                    <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> @:|
+                    <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    @if (item.Status == "Wydane")
+                    {
+                        <form asp-action="ReturnEquipment" asp-route-id="@item.Id" method="post" class="d-inline m-0">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Czy na pewno chcesz zrobić zwrot?');">Zwróć sprzęt</button>
+                        </form>
+                    }
+                }
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

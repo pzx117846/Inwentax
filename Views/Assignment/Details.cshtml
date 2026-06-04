@@ -1,0 +1,77 @@
+﻿@model Inwentax.Models.Assignment
+
+@{
+    ViewData["Title"] = "Szczegóły";
+    var usersList = ViewData["UsersList"] as List<Inwentax.Models.UserViewModel> ?? new List<Inwentax.Models.UserViewModel>();
+}
+
+<div>
+    <h4>Wpis historyczny</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var userMatch = usersList.FirstOrDefault(u => u.Id == Model.UserId);
+            }
+            @if (userMatch != null)
+            {
+                <strong>@userMatch.Name @userMatch.Surname</strong>
+            }
+            else
+            {
+                <span class="text-muted">Nieznany użytkownik</span>
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Laptop)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Laptop != null)
+            {
+                <span>@Model.Laptop.Brand @Model.Laptop.Model - (@Model.Laptop.serial_number)</span>
+            }
+            else
+            {
+                <span class="text-muted">-</span>
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Phone != null)
+            {
+                <span>@Model.Phone.Brand @Model.Phone.Model - (@Model.Phone.Imei)</span>
+            }
+            else
+            {
+                <span class="text-muted">-</span>
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.date_from)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.date_from)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.date_to)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.date_to)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edytuj</a> |
+    <a asp-action="Index">Powrót do listy</a>
+</div>

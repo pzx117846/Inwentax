@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Inwentax.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Zgłoszenia";
+    var usersList = ViewData["UsersList"] as List<Inwentax.Models.UserViewModel> ?? new List<Inwentax.Models.UserViewModel>();
+}
+
+<h1>Zgłoszenia</h1>
+
+@if (!User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Dodaj zgłoszenie</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    Pracownik
+                </th>
+            }
+            <th>
+                Rodzaj zgłoszenia
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Data utworzenia
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Akcja
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @if (User.IsInRole("Admin"))
+            {
+                <td>
+                    @{
+                        var userMatch = usersList.FirstOrDefault(u => u.Id == item.UserId);
+                    }
+                    @if (userMatch != null)
+                    {
+                        <span>@userMatch.Name @userMatch.Surname</span>
+                    }
+                    else
+                    {
+                        <span>Brak użytkownika</span>
+                    }
+                </td>
+            }
+            <td>
+                @if (item.Type == "damage")
+                {
+                    <span>Awaria</span>
+                }
+                else
+                {
+                    <span>Wymiana</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @item.Created.ToString("yyyy-MM-dd")
+            </td>
+            <td>
+                @if (item.Status == "new")
+                {
+                    <span>Nowe</span>
+                }
+                else if (item.Status == "in_progress")
+                {
+                    <span>W trakcie realizacji</span>
+                }
+                else
+                {
+                    <span>Zakończone</span>
+                }
+            </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> @:|
+                    <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a> @: |
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a>
+                
+                @if (User.IsInRole("Admin"))
+                {
+                    @if (item.Status != "done")
+                    {
+                    <form asp-action="Finish" asp-route-id="@item.Id" method="post" class="d-inline m-0">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Czy na pewno chcesz zakończyć zgłoszenie?');">Zakończ</button>
+                    </form>
+                    }
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
